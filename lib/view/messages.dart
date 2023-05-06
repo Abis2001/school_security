@@ -16,7 +16,7 @@ class _MessageScreenState extends State<MessageScreen> {
       body: Container(
         height: Responsive.screenHeight,
         child: ListView.separated(
-          itemCount: 2,
+          itemCount: 2, 
           separatorBuilder: (context, index) => SizedBox(height: 10,),
           itemBuilder: (context, index) => Padding(
             padding: EdgeInsets.all(10), 
