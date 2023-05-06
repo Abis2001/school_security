@@ -20,9 +20,11 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     Responsive().init(context);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Consumer<Auth>(
         builder: (context, value, child) => 
-         SafeArea(
+         SafeArea
+         (
           
           child: Container(
             margin: EdgeInsets.all(Responsive.height(0.01)),
@@ -36,7 +38,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Row(
                       children: [
-                        CustomTypography(text: String.login.toUpperCase(), style: Theme.of(context).textTheme.headlineSmall!),
+                        CustomTypography(text: String.login.toUpperCase(), style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.bold
+                        )),
                        
                       ],
                     ),
@@ -53,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(
-                              color: Colors.red,
+                              color: Colors.white,
                               width: 2
                             )
                           )
@@ -73,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(
-                              color: Colors.red,
+                              color: Colors.white,
                               width: 2
                             )
                           )

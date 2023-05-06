@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_security/constants/routes.dart';
 import 'package:school_security/utils/responsive.dart';
+import 'package:school_security/view/appointment.dart';
 import 'package:school_security/view/notification.dart';
 import 'package:school_security/view/profile.dart';
 class HomeScreen extends StatefulWidget {
@@ -63,13 +64,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text('student profile'),
                     ],
                   ),
-                   Row(
-                    children: [
-                      Icon(Icons.calendar_month),
-                      SizedBox(width: Responsive.width(0.04)),
-                      Text('Appointment'),
-                    ],
-                  ),
+                   InkWell(
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Appoointment()));
+                    },
+                     child: Row(
+                      children: [
+                        Icon(Icons.calendar_month),
+                        SizedBox(width: Responsive.width(0.04)),
+                        Text('Appointment'),
+                      ],
+                                     ),
+                   ),
                    Row(
                     children: [
                       Icon(Icons.leave_bags_at_home),

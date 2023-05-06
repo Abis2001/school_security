@@ -32,7 +32,10 @@ class _RegisterState extends State<Register> {
                 children: [
                   Row(
                     children: [
-                      CustomTypography(text: String.register.toUpperCase(), style: Theme.of(context).textTheme.headlineMedium!),
+                      CustomTypography(text: String.register.toUpperCase(), style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.bold
+                      )),
                      
                     ],
                   ),
