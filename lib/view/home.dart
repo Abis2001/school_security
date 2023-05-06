@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
     'Notifications',
     'Assignment',
     'Holidays',
-    'Message',
+    'Message', 
     'Profile'
   ];
   List<Widget> tabs=[
