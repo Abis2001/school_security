@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Container(),
         Container(),
         MessageScreen(),
-            ProfileScreen(),
+            ProfileScreen(), 
 
   ];
   @override

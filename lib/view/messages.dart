@@ -24,7 +24,7 @@ class _MessageScreenState extends State<MessageScreen> {
               elevation: 10,
               shadowColor: Colors.red,
               borderRadius: BorderRadius.circular(10),
-              child: Container(
+              child: Container( 
                 height: 50,
                 width: Responsive.screenWidth,
                 color: Colors.white,
