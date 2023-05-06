@@ -25,7 +25,7 @@ class _MessageScreenState extends State<MessageScreen> {
               shadowColor: Colors.red,
               borderRadius: BorderRadius.circular(10),
               child: Container( 
-                height: 50,
+                height: 50, 
                 width: Responsive.screenWidth,
                 color: Colors.white,
                 child: Center(child: Text((index.isEven)?'Tommorow is holiday - 07-05-2023':'Parents meetings towards 10-05-2023')),
