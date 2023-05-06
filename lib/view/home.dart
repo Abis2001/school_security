@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:school_security/constants/routes.dart';
 import 'package:school_security/utils/responsive.dart';
 import 'package:school_security/view/appointment.dart';
+import 'package:school_security/view/messages.dart';
 import 'package:school_security/view/notification.dart';
 import 'package:school_security/view/profile.dart';
 class HomeScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     NotificationScreen(),
         Container(),
         Container(),
-        Container(),
+        MessageScreen(),
             ProfileScreen(),
 
   ];
