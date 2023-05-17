@@ -1,4 +1,4 @@
 class ButtonText{
-  static const login='login';
-  static const register='register';
+  static const signin='sign in';
+  static const register='signup';
 }

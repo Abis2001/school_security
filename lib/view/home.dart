@@ -37,16 +37,44 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(titles.elementAt(currentIndex)),
       ),
       drawer: Drawer(
+        
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: Responsive.height(0.2),
+              height: Responsive.height(0.25),
               color: Theme.of(context).colorScheme.primary,
+              padding: EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundColor: Colors.white,
+                      ),
+                      
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text('Abishek',
+                      style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                        letterSpacing: 2.0,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.background
+                      ),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
             Container(
-              height: Responsive.height(0.4),
+              height: Responsive.height(0.3),
               padding: EdgeInsets.symmetric(horizontal: Responsive.width(0.02)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

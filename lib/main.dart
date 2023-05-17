@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         colorScheme: const ColorScheme(
         brightness: Brightness.light,
-        primary: Colors.red,
+        primary: Colors.blueAccent,
         onPrimary: Colors.white,
         secondary: Colors.black,
         onSecondary: Colors.black38,
