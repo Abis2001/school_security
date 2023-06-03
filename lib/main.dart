@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:school_security/services/notifications/notification.dart';
 import 'package:school_security/view/home.dart';
 import 'package:school_security/view/login.dart';
 import 'package:school_security/view/register.dart';
@@ -7,11 +9,15 @@ import 'package:school_security/viewmodel/auth.dart';
 import 'utils/utils.dart';
 import 'package:school_security/view/splash.dart';
 
-void main() {
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+    final notificationManager = NotificationManager();
+  await notificationManager.init();
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_)=>Auth())
+        ChangeNotifierProvider(create: (_)=>Auth()),
       ],
       child: const MyApp(),
     )

@@ -1,10 +1,18 @@
+import 'dart:async';
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:school_security/constants/routes.dart';
+import 'package:school_security/services/dio/logger/logger_interceptor.dart';
 import 'package:school_security/utils/responsive.dart';
 import 'package:school_security/view/appointment.dart';
 import 'package:school_security/view/messages.dart';
 import 'package:school_security/view/notification.dart';
 import 'package:school_security/view/profile.dart';
+
+import '../services/notifications/notification.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -29,6 +37,45 @@ class _HomeScreenState extends State<HomeScreen> {
         ProfileScreen(), 
 
   ];
+final databaseReference = FirebaseDatabase.instance.reference();
+FirebaseFirestore firestore = FirebaseFirestore.instance;
+final docs=FirebaseFirestore.instance.collection('users').doc('students');    
+List<String> ids=[
+  '0B AC 8F 29'// Bala,
+  '2C 88 63 A2'
+];
+String keyId='';
+String cardId='';
+void readData() {
+ 
+  databaseReference.child('card').onValue.listen((event) async{
+  docs.get().then((value) {
+    final id=event.snapshot.child('id').value.toString();
+    final Username=value.get(id)['username'];
+    logDebug(id+Username);
+     final notification = CustomNotification(
+            title: 'Id Detected',
+            body: '$Username $id ',
+    );
+    NotificationManager().showNotification(notification);
+    // DocumentReference updatedocumentReference = FirebaseFirestore.instance.collection('users').doc('students').collection('notifications').doc(' 2C 88 63 A2');
+
+    // updatedocumentReference.update({
+    //         'status': false,
+    //       });
+      });
+
+     
+  });
+
+}
+
+
+  @override
+  void initState() {
+    readData();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                    InkWell(
                     onTap: (){
+                      readData();
                       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Appoointment()));
                     },
                      child: Row(
