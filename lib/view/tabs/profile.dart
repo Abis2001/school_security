@@ -56,7 +56,7 @@ class _ProfileState extends State<Profile> {
             ),
             SizedBox(height: 10),
             Text(
-              (userRole==1)?'Admin':(userRole==2)?'Teacher':'Student',
+              (userRole==1)?'Admin':(userRole==2)?'Parent':'Teacher',
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 50),

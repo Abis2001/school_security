@@ -115,6 +115,7 @@ class _RegisterState extends State<Register> {
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
                               labelText: 'Username',
+                              
                               hintText: 'Enter your username',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -133,6 +134,8 @@ class _RegisterState extends State<Register> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
+                                                        maxLength: 10,
+
                             keyboardType: TextInputType.phone,
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(

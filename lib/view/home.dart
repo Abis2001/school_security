@@ -4,6 +4,10 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:school_security/view/notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 import 'package:school_security/constants/routes.dart';
 import 'package:school_security/services/dio/logger/logger_interceptor.dart';
 import 'package:school_security/utils/responsive.dart';
@@ -24,13 +28,13 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentIndex=0;
   List<String> titles=[
     'Notifications',
-    'Assignment',
+    // 'Assignment',
     'Message',
     'Profile'
   ];
   List<Widget> tabs=[
-        Container(),
-        Container(),
+        NotificationScreen(),
+        // Container(),
         Message(), 
         Profile(), 
 
@@ -55,6 +59,8 @@ List<String> ids=[
   '2C 88 63 A2'
 ];
 String keyId='';
+int sortId=0;
+
 String cardId='';
 int? userId;
 int? userRole;
@@ -69,81 +75,69 @@ getCredentials()async{
     isLoading=false;
   });
 }
+void update(id,value){
+  setState(() {
+    sortId++;
+  });
+var now = DateTime.now().toLocal();
+    var indianTime = now.toUtc().add(Duration(hours: 5, minutes: 30));
+    var formattedTime = DateFormat('h:mm a').format(indianTime);
+    FirebaseFirestore.instance.collection('users').doc('parents').collection('students').doc('notification').collection('students').add(
+      {
+        'id':id,
+        'sortID':sortId,
+        'name':'${value['name']}',
+        'status':value['status'],
+        'time':formattedTime
+      }
+    );
+}
 void readData() {
  
-  databaseReference.child('card').onValue.listen((event) async{
+  databaseReference.child('card').onValue .listen((event) async{
    
   docs.get().then((value) {
-    // if(value.get(event.snapshot.child('id').value.toString())['status']==true){
-    //  docs.update({
-    //       event.snapshot.child('id').value.toString():{
-    //         'In':true,
-    //         'status':true,
-    //       }
-    //       });
-    // }
     final id=event.snapshot.child('id').value.toString();
-    final Username=value.get(id)['username'];
-    final status=value.get(id)['status'];
-    logDebug(status.toString());
-     final notification = CustomNotification(
-            title: 'Id Detected',
-            body: '$Username $id ',
+    logDebug('id '+id);
+     DocumentReference updatedocumentReference = FirebaseFirestore.instance.collection('users').doc('parents').collection('students').doc('$id');
+    updatedocumentReference.get().then((value) async{
+      if(value['status']==true){
+         await updatedocumentReference.update(
+      {
+        'status':false
+      }
+     );
+      final notification = await CustomNotification(
+            title: ' ID DETECTED ',
+            body: '${value['name']} In ${DateTime.now()} ',
     );
     
-    NotificationManager().showNotification(notification);
-   
-    // DocumentReference updatedocumentReference = FirebaseFirestore.instance.collection('users').doc('students').collection('notifications').doc(' 2C 88 63 A2');
+    await NotificationManager().showNotification(notification);
+    update(id, value);
+      }
+      
+      if(value['status']==false){
+            var now = DateTime.now().toLocal();
+    var indianTime = now.toUtc().add(Duration(hours: 5, minutes: 30));
+    var formattedTime = DateFormat('h:mm a').format(indianTime);
 
-    // out
-    DateTime now = DateTime.now();
-  TimeOfDay currentTime = TimeOfDay.fromDateTime(now);
+       await  updatedocumentReference.update(
+      {
+        'status':true
+      }
+     );
+      update(id, value);
+         final notification =await CustomNotification(
+            title: ' ID DETECTED ',
+            body: '${event.snapshot.child('id').value.toString()} Out ${DateTime.now()} ',
+    );
+    
+   await NotificationManager().showNotification(notification);
+      }
+    });
+    
+    
 
-  TimeOfDay morningStartTime = TimeOfDay(hour: 9, minute: 30);
-  TimeOfDay morningEndTime = TimeOfDay(hour: 9, minute: 45);
-  TimeOfDay eveningStartTime=TimeOfDay(hour: 16, minute: 10);
-  TimeOfDay eveningEndTime=TimeOfDay(hour: 16, minute: 30);
-  
-  if(!isTimeInRange(currentTime, morningStartTime, morningEndTime)){
-     docs.update({
-          event.snapshot.child('id').value.toString():{
-            'status':true,
-            'absent':false
-          }
-          });
-    logDebug('Student In');
-  }else{
-    // time end
-      logDebug('out');
-       docs.update({
-          event.snapshot.child('id').value.toString():{
-            'status':false,
-            'absent':true,
-          }
-          });
-    
-    
-  }
-  if(!isTimeInRange(currentTime, eveningStartTime, eveningEndTime)){
-    logDebug('In');
-     docs.update({
-          event.snapshot.child('id').value.toString():{
-            'status':true,
-            'absent':false
-          }
-          });
-  }else{
-    // time end
-      logDebug('absent');
-       docs.update({
-          event.snapshot.child('id').value.toString():{
-            'status':false,
-            'absent':true,
-          }
-          });
-    
-    
-  }
       });
      
 
@@ -156,7 +150,7 @@ void readData() {
 
   @override
   void initState() {
-    //readData();
+    readData();
     getCredentials();
     super.initState();
   }
@@ -312,11 +306,11 @@ void readData() {
               label: 'Notifications'
               
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.assignment),
-                          label: 'Assignment'
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.assignment),
+            //               label: 'Assignment'
       
-            ),
+            // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.message),
                           label: 'Message'
