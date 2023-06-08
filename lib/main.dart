@@ -11,9 +11,10 @@ import 'package:school_security/view/splash.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-    final notificationManager = NotificationManager();
-  await notificationManager.init();
+      await Firebase.initializeApp();
+      final notificationManager = NotificationManager();
+      await notificationManager.init();
+
   runApp(
     MultiProvider(
       providers: [

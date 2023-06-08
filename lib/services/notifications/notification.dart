@@ -55,12 +55,12 @@ class NotificationManager {
 
   Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
-    await Firebase.initializeApp();
+    //await Firebase.initializeApp();
     print("Handling a background message: ${message.messageId}");
   }
 
   Future<void> showNotification(CustomNotification notification) async {
-    final AndroidNotificationDetails androidPlatformChannelSpecifics =
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'school security id',
       'school',

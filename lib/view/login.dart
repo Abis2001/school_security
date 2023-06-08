@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:school_security/utils/responsive.dart';
+import 'package:school_security/utils/storage.dart';
 import 'package:school_security/utils/utils.dart';
 import 'package:school_security/viewmodel/auth.dart';
 class LoginScreen extends StatefulWidget {
@@ -162,6 +163,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ],
                                     ));
                                   }else if(provider.loginData.status==true||provider.loginData.status==false){
+                                    await SharedPrefUtils.saveInt('userId',provider.loginData.userId!);
+                                    await SharedPrefUtils.saveInt('role',provider.loginData.role!);
+                                    await SharedPrefUtils.saveString('userame',provider.loginData.username!);
                                     showDialog(context: context, builder: (context) => CupertinoAlertDialog(
                                       content: Text('Logged Successfully'),
                                       actions: [
