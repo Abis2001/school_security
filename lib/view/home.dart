@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:school_security/utils/typography.dart';
 import 'package:school_security/view/notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
@@ -66,10 +67,11 @@ int? userId;
 int? userRole;
 String? username;
 bool isLoading=true;
+bool intializing=false;
 getCredentials()async{
-  userId=await SharedPrefUtils.getInt('userId');
-  userRole=await SharedPrefUtils.getInt('role');
-  username=await SharedPrefUtils.getString('username');
+    userId=await SharedPrefUtils.getInt('userId');
+    username=await SharedPrefUtils.getString('userame');
+    userRole=await SharedPrefUtils.getInt('role');
   logDebug(username.toString());
   setState(() {
     isLoading=false;
@@ -82,6 +84,7 @@ void update(id,value){
 var now = DateTime.now().toLocal();
     var indianTime = now.toUtc().add(Duration(hours: 5, minutes: 30));
     var formattedTime = DateFormat('h:mm a').format(indianTime);
+    
     FirebaseFirestore.instance.collection('users').doc('parents').collection('students').doc('notification').collection('students').add(
       {
         'id':id,
@@ -95,11 +98,14 @@ var now = DateTime.now().toLocal();
 void readData() {
  
   databaseReference.child('card').onValue .listen((event) async{
-   
   docs.get().then((value) {
     final id=event.snapshot.child('id').value.toString();
     logDebug('id '+id);
+    if(id==' 0B AC 8F 29'||id==' 2C 88 63 A2'){
+
+  
      DocumentReference updatedocumentReference = FirebaseFirestore.instance.collection('users').doc('parents').collection('students').doc('$id');
+
     updatedocumentReference.get().then((value) async{
       if(value['status']==true){
          await updatedocumentReference.update(
@@ -137,12 +143,24 @@ void readData() {
     });
     
     
-
+  }else{
+     final notification =  CustomNotification(
+            title: ' Unknown ID DETECTED ',
+            body: ' unknown',
+    );
+    
+     NotificationManager().showNotification(notification);
+    }
       });
+      
      
 
 
-     
+   
+  });
+ 
+  setState(() {
+    intializing=true;
   });
 
 }
@@ -154,6 +172,12 @@ void readData() {
     getCredentials();
     super.initState();
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   readData();
+  //   super.didChangeDependencies();
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,7 +202,16 @@ void readData() {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CircleAvatar(
+                        child: Center(
+                          child: CustomTypography(
+                            text: username.toString().substring(0,1).toUpperCase(),
+                            style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                              color: Theme.of(context).colorScheme.secondary
+                            ),
+                          ),
+                        ),
                         radius: 40,
+                        foregroundColor: Colors.red,
                         backgroundColor: Colors.white,
                       ),
                       
@@ -186,7 +219,7 @@ void readData() {
                   ),
                   Row(
                     children: [
-                      Text(username??'',
+                      Text((username??'').toUpperCase(),
                       style: Theme.of(context).textTheme.labelLarge!.copyWith(
                         letterSpacing: 2.0,
                         fontWeight: FontWeight.bold,

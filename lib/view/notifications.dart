@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:school_security/utils/typography.dart';
 
 class NotificationScreen extends StatelessWidget {
@@ -27,16 +28,17 @@ class NotificationScreen extends StatelessWidget {
             return Center(child: Text('No notifications found'));
           }
 
+          // Sort the snapshot based on time
+snapshot.data!.docs.sort((a, b) => DateFormat("hh:mm a").parse(b['time']).compareTo(DateFormat("hh:mm a").parse(a['time'])));
+
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (BuildContext context, int index) {
-              var id=snapshot.data!.docs[index]['id'];
-              var name=snapshot.data!.docs[index]['name'];
-              var time=snapshot.data!.docs[index]['time'];
-              bool status=snapshot.data!.docs[index]['status'];
-                  snapshot.data!.docs.sort((a, b) => b['sortID'].compareTo((a['sortID'])));
+              var id = snapshot.data!.docs[index]['id'];
+              var name = snapshot.data!.docs[index]['name'];
+              var time = snapshot.data!.docs[index]['time'];
+              bool status = snapshot.data!.docs[index]['status'];
 
-              
               // Customize the UI according to your notification data
               return Container(
                 margin: EdgeInsets.all(10),
@@ -44,7 +46,7 @@ class NotificationScreen extends StatelessWidget {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2)
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                 ),
                 child: Row(
                   children: [
@@ -54,7 +56,7 @@ class NotificationScreen extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 40,
                           child: Icon(Icons.person),
-                          backgroundColor: (status)?Colors.green:Colors.red,
+                          backgroundColor: (status) ? Colors.green : Colors.red,
                           foregroundColor: Theme.of(context).colorScheme.background,
                         ),
                       ),
@@ -69,38 +71,36 @@ class NotificationScreen extends StatelessWidget {
                             CustomTypography(
                               text: id,
                               style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                                fontWeight: FontWeight.bold
-                              ),
-                            ),
-                              SizedBox(
-                                width: 200,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CustomTypography(
-                                    text: name.toString().toUpperCase(),
-                                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                                      fontWeight: FontWeight.bold
-                                    ),
-                                                          ),
-                                                          CustomTypography(
-                                    text: (status)?'IN':'OUT',
-                                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: (status)?Colors.green:Colors.red
-                                    ),
-                                                          ),
-                                                          
-                                  ],
-                                ),
-                              ),
-                              CustomTypography(
-                                  text: time,
-                                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                                    fontWeight: FontWeight.bold
+                                    fontWeight: FontWeight.bold,
                                   ),
                             ),
-                            
+                            SizedBox(
+                              width: 200,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomTypography(
+                                    text: name.toString().toUpperCase(),
+                                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                  CustomTypography(
+                                    text: (status) ? 'IN' : 'OUT',
+                                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: (status) ? Colors.green : Colors.red,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            CustomTypography(
+                              text: time,
+                              style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
                           ],
                         ),
                       ),
@@ -108,7 +108,7 @@ class NotificationScreen extends StatelessWidget {
                   ],
                 ),
               );
-            }
+            },
           );
         },
       ),

@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     timer=Timer(Duration(seconds: 3), () async{
       var userId=await SharedPrefUtils.getInt('userId');
       logDebug('userID $userId');
-      if(userId!=0||userId!=null){
+      if(userId!=0){
         Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context)=> HomeScreen()),(route) => false);
       }else{
         Navigator.pushNamed(context, Routes.login);

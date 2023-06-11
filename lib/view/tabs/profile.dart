@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:school_security/utils/responsive.dart';
 import 'package:school_security/utils/storage.dart';
 import 'package:school_security/utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../login.dart';
 class Profile extends StatefulWidget {
   const Profile({super.key});
 
@@ -75,32 +78,49 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             const SizedBox(height: 50),
-            Container(
-              height: Responsive.height(0.05),
-              width: Responsive.width(0.6),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.2)
-              ),
-              child: Center(
-                child: CustomTypography(
-                  text: 'support',
-                  style: Theme.of(context).textTheme.labelMedium!,
+            InkWell(
+              onTap: ()async{
+                const url =
+                                                  "https://limat-tech.com/contact-us/";
+                                              if (await canLaunchUrl(Uri.parse(url))) {
+                                                await launchUrl(Uri.parse(url),mode:LaunchMode.inAppWebView );
+                                              } else {
+                                                throw 'Could not launch $url';
+                                              }
+              },
+              child: Container(
+                height: Responsive.height(0.05),
+                width: Responsive.width(0.6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2)
+                ),
+                child: Center(
+                  child: CustomTypography(
+                    text: 'support',
+                    style: Theme.of(context).textTheme.labelMedium!,
+                  ),
                 ),
               ),
             ),
              const SizedBox(height: 50),
-            Container(
-              height: Responsive.height(0.05),
-              width: Responsive.width(0.6),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.2)
-              ),
-               child: Center(
-                child: CustomTypography(
-                  text: 'Logout',
-                  style: Theme.of(context).textTheme.labelMedium!,
+            InkWell(
+              onTap: (){
+                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginScreen()), (route) => false);
+                SharedPrefUtils.clearData();
+              },
+              child: Container(
+                height: Responsive.height(0.05),
+                width: Responsive.width(0.6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2)
+                ),
+                 child: Center(
+                  child: CustomTypography(
+                    text: 'Logout',
+                    style: Theme.of(context).textTheme.labelMedium!,
+                  ),
                 ),
               ),
             )
